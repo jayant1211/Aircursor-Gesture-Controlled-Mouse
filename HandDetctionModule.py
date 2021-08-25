@@ -86,10 +86,10 @@ def detectCase(x,y):
 
     for i in range(0,len(ratio)):
         if(ratio[i]>0.4):
+            result[i] = 'definately open'
+        elif(ratio[i]>0.3):
             result[i] = 'open'
-        if(ratio[i]>0.3):
-            result[i] = 'open'
-        if(ratio[i]<0.1):
-            result[i] = 'close'
+        elif(ratio[i]>0.1):
+            result[i] = 'probably open but no use'
     #print(ratio)
     print(result)
