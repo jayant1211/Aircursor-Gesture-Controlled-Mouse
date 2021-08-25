@@ -46,4 +46,3 @@ def detectHand(img):
                                       mp_drawing_styles.get_default_hand_connections_style())
 
         return cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
-
