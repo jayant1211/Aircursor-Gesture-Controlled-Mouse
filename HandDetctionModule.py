@@ -35,16 +35,18 @@ def detectHand(img):
     with mp_hands.Hands(static_image_mode=True, max_num_hands=1, min_detection_confidence=0.5) as hands:
         img = cv2.flip(cv2.cvtColor(img,cv2.COLOR_BGR2RGB),1)
         result = hands.process(img)
-
-
         height, width = img.shape[:2]
-        for hand_landmarks in result.multi_hand_landmarks:
-            mp_drawing.draw_landmarks(img, hand_landmarks, mp_hands.HAND_CONNECTIONS,
+        if not result.multi_hand_landmarks:
+            return cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
+
+        else:
+            for hand_landmarks in result.multi_hand_landmarks:
+                mp_drawing.draw_landmarks(img, hand_landmarks, mp_hands.HAND_CONNECTIONS,
                                       mp_drawing_styles.get_default_hand_landmarks_style(),
                                       mp_drawing_styles.get_default_hand_connections_style())
 
         return cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
-        '''
+        '''for multiple images together
     with mp_hands.Hands(static_image_mode=True, max_num_hands=1, min_detection_confidence=0.5) as hands:
         for idx, file in enumerate(IMAGE_FILES):
             # Read an image, flip it around y-axis for correct handedness output (see
@@ -71,9 +73,3 @@ def detectHand(img):
                 mp_drawing.draw_landmarks(annotated_image,hand_landmarks,mp_hands.HAND_CONNECTIONS,mp_drawing_styles.get_default_hand_landmarks_style(),mp_drawing_styles.get_default_hand_connections_style())
             cv2.imwrite('/tmp/annotated_image' + str(idx) + '.png', cv2.flip(annotated_image, 1))'''
 
-img = cv2.imread('this.jpg')
-img = detectHand(img)
-
-cv2.imshow('hello',img)
-
-cv2.waitKey(0)
