@@ -22,6 +22,7 @@ Case III: Anything else
     Continue to next Frame
 '''
 import mediapipe as mp
+import numpy as np
 import cv2
 import mediapipe as mp
 
@@ -67,9 +68,28 @@ def detectHand(img):
         return x_locs,y_locs,cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
 
 def detectCase(x,y):
+    result = ['close','close','close','close','close']
+    # ratio is a gpod idea as hnd distance may vary
+    # 0.3>open
+    #------ 0.4 definetly open finger
+    #not implemented !=21
     ratio = []
     arr = len(x)
-    if arr!=0:
-        for i in range (0,5):
-            ratio.append(-1*(y[arr-17+4*i]-y[0]))
+    final = []
+    sum=0
+    if arr==21:
+        for i in range (1,6):
+            ratio.append((y[i*4]-y[0]))
+            sum= sum+ratio[i-1]
+    ratio = np.array(ratio)
+    ratio = ratio/sum
+
+    for i in range(0,len(ratio)):
+        if(ratio[i]>0.4):
+            result[i] = 'open'
+        if(ratio[i]>0.3):
+            result[i] = 'open'
+        if(ratio[i]<0.1):
+            result[i] = 'close'
     #print(ratio)
+    print(result)
