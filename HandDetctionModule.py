@@ -68,16 +68,18 @@ def detectHand(img):
         return x_locs,y_locs,cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
 
 def detectCase(x,y):
-    result = ['close','close','close','close','close']
+    result = [0,0,0,0,0]
     # ratio is a gpod idea as hnd distance may vary
     # 0.3>open
     #------ 0.4 definetly open finger
     #not implemented !=21
     ratio = []
+    cords = []
     arr = len(x)
     final = []
     sum=0
     if arr==21:
+        cords = list(zip(x,y))
         for i in range (1,6):
             ratio.append((y[i*4]-y[0]))
             sum= sum+ratio[i-1]
@@ -86,10 +88,32 @@ def detectCase(x,y):
 
     for i in range(0,len(ratio)):
         if(ratio[i]>0.4):
-            result[i] = 'definately open'
+            result[i] = 3  #3 : deginately open
         elif(ratio[i]>0.3):
-            result[i] = 'open'
+            result[i] = 2  #2 : open
         elif(ratio[i]>0.1):
-            result[i] = 'probably open but no use'
+            result[i] = 1  #1: probably open but no use
+                           # 0 : close
+
+
+    def oneOpen():
+        print("One Open: ")
+
+    def twoOpen():
+        print("Two Open")
+
+    def threeOpen():
+        print("Three Open")
+
+    open = result.count(3) + result.count(2)
+    if open==1:
+        oneOpen()
+    elif open==2:
+        twoOpen()
+    elif open==3:
+        threeOpen()
+    else:
+        print("case reject")
+    #print(cords)
     #print(ratio)
-    print(result)
+  #  print(result)
