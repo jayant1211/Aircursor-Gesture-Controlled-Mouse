@@ -69,6 +69,7 @@ def detectHand(img):
 
 def detectCase(x,y):
     result = [0,0,0,0,0]
+    result = np.array(result)
     # ratio is a gpod idea as hnd distance may vary
     # 0.3>open
     #------ 0.4 definetly open finger
@@ -95,23 +96,41 @@ def detectCase(x,y):
             result[i] = 1  #1: probably open but no use
                            # 0 : close
 
+    def whichFinger(*ele):
+        finger = {0:"thumb",1: "index", 2: "middle", 3: "ring", 4: "pinky"}
+        for i in ele:
+            print(finger.get(i),"is open",end = " ")
+        print('\n')
 
-    def oneOpen():
-        print("One Open: ")
+    def oneOpen(fingCord):
+        #print("One Open",fingCord)
+        whichFinger(fingCord)
 
-    def twoOpen():
-        print("Two Open")
+    def twoOpen(fingCord1,fingCord2):
+        #print("Two Open",fingCord1,fingCord2)
+        whichFinger(fingCord1,fingCord2)
 
-    def threeOpen():
-        print("Three Open")
+    threes = np.where(result == 3)[0]
+    twos = np.where(result == 2)[0]
 
-    open = result.count(3) + result.count(2)
+    open = len(threes)+len(twos)
+
     if open==1:
-        oneOpen()
+        if len(threes)==1:
+            oneOpen(threes[0])
+        else:
+            oneOpen(twos[0])
+
     elif open==2:
-        twoOpen()
-    elif open==3:
-        threeOpen()
+        if len(twos)==2:
+            twoOpen(twos[0],twos[1])
+
+        elif len(twos)==1:
+            twoOpen(twos[0],threes[0])
+
+        else:
+            twoOpen(threes[0],threes[1])
+
     else:
         print("case reject")
     #print(cords)
