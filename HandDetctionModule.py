@@ -9,7 +9,7 @@ Detect hand--->yes--->step2
 Case I: Single tip
     Implement Mouse Pointer Movement--->movement()
 
-Case II: Joint
+Case II: Two tips and Joint
     detectCase():
         SubCase 1: Twice tap in Short Duration
             Implement Left Click----------->leftClick()
@@ -25,6 +25,7 @@ import mediapipe as mp
 import numpy as np
 import cv2
 import mediapipe as mp
+import math
 
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
@@ -32,20 +33,27 @@ mp_hands = mp.solutions.hands
 
 
 def detectHand(img):
+    ##case 1 finger open
+    ##case 2 two finger
+    ##case 3 rejection case
     i = 0
     x_locs = []
     y_locs = []
     z_locs = []
     with mp_hands.Hands(static_image_mode=True, max_num_hands=1, min_detection_confidence=0.5) as hands:
         img = cv2.flip(cv2.cvtColor(img, cv2.COLOR_BGR2RGB), 1)
+        white = np.full(img.shape, 255, dtype=np.uint8)
         result = hands.process(img)
         height, width = img.shape[:2]
         if not result.multi_hand_landmarks:
-            return x_locs,y_locs,cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
+            #return x_locs,y_locs,cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
+            return x_locs, y_locs, white
 
         else:
             for hand_landmarks in result.multi_hand_landmarks:
                 mp_drawing.draw_landmarks(img, hand_landmarks, mp_hands.HAND_CONNECTIONS,mp_drawing_styles.get_default_hand_landmarks_style(),mp_drawing_styles.get_default_hand_connections_style())
+                mp_drawing.draw_landmarks(white, hand_landmarks, mp_hands.HAND_CONNECTIONS,mp_drawing_styles.get_default_hand_landmarks_style(),mp_drawing_styles.get_default_hand_connections_style())
+
                 for point in mp_hands.HandLandmark:
                     normalizedLandmark = hand_landmarks.landmark[point]
                     pixelCoordinatesLandmark = mp_drawing._normalized_to_pixel_coordinates(normalizedLandmark.x,
@@ -65,9 +73,59 @@ def detectHand(img):
                                  hand_landmarks.landmark[i].y * height,
                                  hand_landmarks.landmark[i].z))'''
 
-        return x_locs,y_locs,cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
+        #return x_locs,y_locs,cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
+        return x_locs,y_locs,white
 
 def detectCase(x,y):
+    tip_minus_middle = []
+    status = ["Close","Close","Close","Close","Close"]
+    arr = len(x)
+    if arr==21:
+        cords = list(zip(x,y))
+        for i in range (1,6):
+            tip_minus_middle.append(-1*(y[i*4]-y[4*i-1]))
+
+    #print(tip_minus_middle)
+
+    for i in range (0,len(tip_minus_middle)):
+        if i == 0:
+            #check pinky ans thumb
+            #print(x[20]-x[4])       #positive is right front or left back
+                                    # negative is right back or left front
+            ortn = x[20]-x[4]
+            flag = x[4] - x[3]
+            if  ortn>0:
+                if flag < 0:
+                    status[i] = "Open"
+            else:
+                if flag>0:
+                    status[i] = "Open"
+        elif tip_minus_middle[i]>=0:
+            status[i]="Open"
+
+
+
+    print(status)
+    open = status.count("Open")
+    status = np.array(status)
+
+
+    open_index = np.where(status == "Open")[0]
+    open_cords = []
+    for i in open_index:
+        open_cords.append(cords[4*(i+1)])
+    #print(len(open_index))
+    #print(open_cords)
+    #case thumb and index finger
+    if status[0]=='Open':
+        xcentre = open_cords[0][0]-cords[8][0]
+        if abs(xcentre)<15:
+            open_cords.append(cords[8])
+
+    return open_cords
+
+
+'''def detectCase2(x,y):
     result = [0,0,0,0,0]
     result = np.array(result)
     # ratio is a gpod idea as hnd distance may vary
@@ -105,10 +163,18 @@ def detectCase(x,y):
     def oneOpen(fingCord):
         #print("One Open",fingCord)
         whichFinger(fingCord)
+        p0= cords[4*(fingCord+1)]
+        return p0,None
 
     def twoOpen(fingCord1,fingCord2):
         #print("Two Open",fingCord1,fingCord2)
+        print(4 * fingCord1,4 * fingCord2)
+        p0,p1 = cords[4*(fingCord1+1)],cords[4*(fingCord2+1)]
+        print("p1,p2 : ",p0,p1)
         whichFinger(fingCord1,fingCord2)
+        dist = math.sqrt(pow(p0[0]-p1[0],2)+pow(p0[1]-p1[1],2))
+        print(dist)
+        return p0,p1
 
     threes = np.where(result == 3)[0]
     twos = np.where(result == 2)[0]
@@ -117,22 +183,24 @@ def detectCase(x,y):
 
     if open==1:
         if len(threes)==1:
-            oneOpen(threes[0])
+            return oneOpen(threes[0])
         else:
-            oneOpen(twos[0])
+            return oneOpen(twos[0])
 
     elif open==2:
         if len(twos)==2:
-            twoOpen(twos[0],twos[1])
+            return twoOpen(twos[0],twos[1])
 
         elif len(twos)==1:
-            twoOpen(twos[0],threes[0])
+            return twoOpen(twos[0],threes[0])
 
         else:
-            twoOpen(threes[0],threes[1])
+            return twoOpen(threes[0],threes[1])
 
     else:
         print("case reject")
+        return None, None
+
     #print(cords)
     #print(ratio)
-  #  print(result)
+  #  print(result)'''
