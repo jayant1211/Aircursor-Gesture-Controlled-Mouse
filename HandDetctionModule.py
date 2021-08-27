@@ -93,19 +93,23 @@ def detectCase(x,y):
             #print(x[20]-x[4])       #positive is right front or left back
                                     # negative is right back or left front
             ortn = x[20]-x[4]
-            flag = x[4] - x[3]
+            flag_thumb_3_4 = x[4] - x[3]
             if  ortn>0:
-                if flag < 0:
+                if flag_thumb_3_4 < 0:
+                    print(y[5]-y[4])
                     status[i] = "Open"
+                else:
+                    status[i] = "Close"
             else:
-                if flag>0:
+                if flag_thumb_3_4>0:
                     status[i] = "Open"
+            
         elif tip_minus_middle[i]>=0:
             status[i]="Open"
 
 
 
-    print(status)
+
     open = status.count("Open")
     status = np.array(status)
 
@@ -119,9 +123,11 @@ def detectCase(x,y):
     #case thumb and index finger
     if status[0]=='Open':
         xcentre = open_cords[0][0]-cords[8][0]
-        if abs(xcentre)<15:
-            open_cords.append(cords[8])
-
+        if abs(xcentre)<20:
+            if status[1]!='Open':
+                status[1] = 'Open'
+                open_cords.insert(1,cords[8])
+    print(status)
     return open_cords
 
 
