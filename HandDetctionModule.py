@@ -96,7 +96,7 @@ def detectCase(x,y):
             flag_thumb_3_4 = x[4] - x[3]
             if  ortn>0:
                 if flag_thumb_3_4 < 0:
-                    print(y[5]-y[4])
+                    print("desired",y[5]-y[4])
                     status[i] = "Open"
                 else:
                     status[i] = "Close"
@@ -128,6 +128,10 @@ def detectCase(x,y):
                 status[1] = 'Open'
                 open_cords.insert(1,cords[8])
     print(status)
+    if status[0] == "Open":
+        # print("",xcentre)
+        print("ortn",ortn)
+        print("flag_thumb_3_4",flag_thumb_3_4)
     return open_cords
 
 
