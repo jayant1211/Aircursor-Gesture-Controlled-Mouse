@@ -94,7 +94,7 @@ def detectCase(x,y):
                                     # negative is right back or left front
             ortn = x[20]-x[4]
             flag_thumb_3_4 = x[4] - x[3]
-            if  ortn>0:
+            if  ortn>-30:  #-30 for case if hand is close and thumb overlaps pinky, in orientation its -250 so it should be fine
                 if flag_thumb_3_4 < 0:
                     print("desired",y[5]-y[4])
                     status[i] = "Open"
