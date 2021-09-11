@@ -10,12 +10,10 @@ cap = cv2.VideoCapture(0)
 cap.set(3, 960) #camera resolution,values should be same in interpolation
 cap.set(4, 540)
 
-pTime = time.time()
-
 holdFlag = "Off"
 
 reducedFrame = 100
-smoothening = 7
+smoothening = 6
 plocX,plocY = 0,0
 
 #holdFlag =0
@@ -50,8 +48,8 @@ def caseMovement(frame,x1,y1):
         else:
             y3, x3 = screenH - 1, screenW - 1
     global plocY,plocX
-    x3 = plocX + (x3 - plocX) / 5
-    y3 = plocY + (y3 - plocY) / 5
+    x3 = plocX + (x3 - plocX) / smoothening
+    y3 = plocY + (y3 - plocY) / smoothening
 
     try:
         autopy.mouse.move(x3, y3)
@@ -66,10 +64,10 @@ def caseLeft():
 def caseRight():
     autopy.mouse.click(autopy.mouse.Button.RIGHT, delay = None)
 
-def leftToggleOn(x,y):
+def leftToggleOn(frame,x,y):
     print("holding : implement toggle")
     autopy.mouse.toggle(autopy.mouse.Button.LEFT,True)
-    autopy.mouse.move(x, y)
+    caseMovement(frame,x,y)
 
 def leftToggleOff():
     print("not holding : implement toggle off")
@@ -82,11 +80,6 @@ def caseDefault(frame):
 
 
 while True:
-
-
-    cTime = time.time()
-    instance = cTime - pTime
-
     _, frame = cap.read()
     org = frame.copy()
     x,y,frame= hdm.detectHand(frame)
@@ -133,23 +126,23 @@ while True:
         print("entered loop")
         if cords[0] == index and cords[1] == middle and cords[2] == ring:
             print("left toggle  on")
-            leftToggleOn(index[0],index[1])
             holdFlag = "On"
+            leftToggleOn(frame,cords[0][0],cords[0][1])
+
     else:
         caseDefault(frame)
 
-    cv2.putText(frame, str(int(instance)), (20, 50), cv2.FONT_HERSHEY_PLAIN, 3,
-                (255, 0, 0), 3)
+    #cv2.putText(frame, str(int(instance)), (20, 50), cv2.FONT_HERSHEY_PLAIN, 3,
+    #           (255, 0, 0), 3)
 
     #x,y,z = hdm.detectCase()
     #print("x : ",x,"y : ",y,"z : ",z)
     #dump1, dump2  = hdm.detectCase(x,y)
     #frame = cv2.circle(cv2.circle(frame,dump2,5,(0,0,255),2),(dump1),5,(0,0,255),2)
     #cv2.resize(frame, (640, 480))
-    cv2.imshow("hello",frame)
-    #cv2.imshow("hfb",org)
+    cv2.imshow("2",frame)
+    org = cv2.flip(cv2.resize(org,(600,300)),1)
+    cv2.imshow("1",org)
     if cv2.waitKey(5) & 0xFF == 27:
         break
-
-
 cap.release()
