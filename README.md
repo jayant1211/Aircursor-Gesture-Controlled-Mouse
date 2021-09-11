@@ -2,7 +2,7 @@
 
 The Objective of project is to Control Mouse remotely using Hand Gestures.
 
-## Pre-requisites
+## Getting Started
 
 For hand detection, we are going to use [Mediapipe Solutions](https://google.github.io/mediapipe/). 
 And for controlling Mouse, [Autopy](https://pypi.org/project/autopy/)
