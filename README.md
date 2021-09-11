@@ -7,7 +7,7 @@ The Objective of project is to Control Mouse remotely using Hand Gestures.
 For hand detection, we are going to use [Mediapipe Solutions](https://google.github.io/mediapipe/). 
 And for controlling Mouse, [Autopy](https://pypi.org/project/autopy/)
 
-Install both in base environment using cmd as particular packages wont appear in Project interpreter package search result.
+Install both in your base environment using cmd as particular packages wont appear in Pycharm's project interpreter->package search results.
 
 ### Mediapipe
 #### Step 1.
