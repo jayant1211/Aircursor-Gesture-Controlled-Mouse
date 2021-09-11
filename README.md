@@ -4,25 +4,47 @@ The Objective of project is to Control Mouse remotely using Hand Gestures.
 
 ## Pre-requisites
 
-For hand detection, we are going to use Mediapipe Solutions . 
+For hand detection, we are going to use [Mediapipe Solutions](https://google.github.io/mediapipe/). 
+And for controlling Mouse, [Autopy](https://pypi.org/project/autopy/)
 
-Install it in your base environment using cmd as particular package wont appear in Project interpreter package search result.
+Install both in base environment using cmd as particular packages wont appear in Project interpreter package search result.
 
-### Step 1.
+### Mediapipe
+#### Step 1.
 
-In cmd, Install Mediapipe and start python interpreter
+In cmd, Install Mediapipe and verify the installation
 
 >pip install mediapipe
 
+#### Step 2.
+
+verify installation by importing package
+
 >python
-
-### Step 2.
-
-In Python interpreter, import the package and make sure you are not getting any error
 
 >import mediapipe as mp
 
-### Optional
+### Autopy
+
+#### Step 1.
+
+In cmd, install autopy and verify the installation
+
+>pip install wheel
+
+>pip install setuptools-rust
+
+>pip install autopy
+
+#### Step 2.
+
+>python
+
+>import autopy
+
+>autopy.mouse.move(1, 1)
+
+### *Optional*
 
 *If you are using virtual environment, activate it and install the package there.*
 
