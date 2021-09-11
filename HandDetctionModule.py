@@ -107,9 +107,6 @@ def detectCase(x,y):
         elif tip_minus_middle[i]>=0:
             status[i]="Open"
 
-
-
-
     open = status.count("Open")
     status = np.array(status)
 
