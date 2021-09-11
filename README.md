@@ -6,7 +6,7 @@ The Objective of project is to Control Mouse remotely using Hand Gestures.
 
 For hand detection, we are going to use Mediapipe Solutions . 
 
-Install it in your base environment using cmd as particular package wont appear Project interpreter package search.
+Install it in your base environment using cmd as particular package wont appear in Project interpreter package search result.
 
 ### Step 1.
 
