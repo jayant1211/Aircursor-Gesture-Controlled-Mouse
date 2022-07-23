@@ -10,49 +10,27 @@ And for controlling Mouse, [Autopy](https://pypi.org/project/autopy/)
 Install both in your base environment using cmd as particular packages wont appear in Pycharm's project interpreter->package search results.
 
 ### Mediapipe
-#### Step 1.
 
 In cmd, Install Mediapipe and verify the installation
 
->pip install mediapipe
-
-#### Step 2.
+  pip install mediapipe
 
 verify installation by importing package
-
->python
-
->import mediapipe as mp
+  python
+  import mediapipe as mp
 
 ### Autopy
 
-#### Step 1.
+Install autopy and verify the installation
 
-In cmd, install autopy and verify the installation
+  pip install wheel
+  pip install setuptools-rust
+  pip install autopy
 
->pip install wheel
 
->pip install setuptools-rust
-
->pip install autopy
-
-#### Step 2.
-
->python
-
->import autopy
-
->autopy.mouse.move(1, 1)
-
-### *Optional*
-
-*If you are using virtual environment, activate it and install the package there.*
-
-*For instance,*
-
->*path_to_venv\scripts\activate.bat*
-
-*repeat step 1 and 2*
+  python
+  import autopy
+  autopy.mouse.move(1, 1)
 
 ## Different Gesture Modes
 
