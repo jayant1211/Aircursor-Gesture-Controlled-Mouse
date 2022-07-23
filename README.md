@@ -17,6 +17,7 @@ In cmd, Install Mediapipe and verify the installation
 
 verify installation by importing package
 >python
+
 >import mediapipe as mp
 
 ### Autopy
@@ -24,12 +25,16 @@ verify installation by importing package
 Install autopy and verify the installation
 
 >pip install wheel
+
 >pip install setuptools-rust
+
 >pip install autopy
 
 
 >python
+
 >import autopy
+
 >autopy.mouse.move(1, 1)
 
 ## Different Gesture Modes
