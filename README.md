@@ -13,11 +13,11 @@ Install both in your base environment using cmd as particular packages wont appe
 
 In cmd, Install Mediapipe and verify the installation
 
-  pip install mediapipe
+>pip install mediapipe
 
 verify installation by importing package
-  python
-  import mediapipe as mp
+  >python
+  >import mediapipe as mp
 
 ### Autopy
 
