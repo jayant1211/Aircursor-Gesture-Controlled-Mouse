@@ -1,4 +1,4 @@
-# Gesture Controlled Mouse
+# Aircursor : Gesture Controlled Mouse
 
 The Objective of project is to Control Mouse remotely using Hand Gestures.
 
